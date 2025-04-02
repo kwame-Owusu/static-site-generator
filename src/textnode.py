@@ -11,6 +11,9 @@ class TextType(Enum):
 
 
 class TextNode():
+    """
+    represents the various types of inline text that can exist in HTML and Markdown.
+    """
     def __init__(self, text: str, text_type: TextType, url: str = None) -> None:
         self.text = text
         self.text_type = text_type
