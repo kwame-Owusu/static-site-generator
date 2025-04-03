@@ -33,6 +33,11 @@ class HTMLNode():
 
 
 class LeafNode(HTMLNode):
+    """
+    A LeafNode is a type of HTMLNode that represents a single HTML tag with no children.\n 
+    For example, a simple p tag with some text inside of it:\n
+    p This is a paragraph of text./p
+    """
     def __init__(self, tag: str = None ,value: str = None, props: dict[str, str] = None):
         super().__init__(tag, value, props,)
     
