@@ -2,7 +2,7 @@ import unittest
 from htmlnode import *
 
 
-class TestTextNode(unittest.TestCase):
+class TestHtml(unittest.TestCase):
     def test_repr(self):
         node = HTMLNode("p", "Hello", None, None)
         expected = "HTMLNode('p', 'Hello', children: None, None)"
