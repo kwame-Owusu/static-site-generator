@@ -38,13 +38,16 @@ class LeafNode(HTMLNode):
     For example, a simple p tag with some text inside of it:\n
     p This is a paragraph of text./p
     """
-    def __init__(self, tag: str = None ,value: str = None, props: dict[str, str] = None):
-        super().__init__(tag, value, props,)
+    def __init__(self, tag: str,value: str, props: dict[str, str] = None):
+        super().__init__(tag, value, None, props,)
     
     def to_html(self):
         if self.value == None:
-            raise ValueError("all leaf nodes must have a value")
+            raise ValueError("invalid HTML: no value")
         if self.tag == None:
-            return f"{self.value}"
+            return self.value
 
-        return f"<{self.tag}>{self.value}</{self.tag}>"
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+    def __repr__(self):
+        return f"LeafNode({self.tag}, {self.value}, {self.props})"
