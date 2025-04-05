@@ -1,5 +1,4 @@
 
-
 class HTMLNode():
     """
     represents a "node" in an HTML document tree (like a <p> tag and its contents, or an <a> tag and its contents).
@@ -8,7 +7,8 @@ class HTMLNode():
     tag - A string representing the HTML tag name (e.g. "p", "a", "h1", etc.)\n
     value - A string representing the value of the HTML tag (e.g. the text inside a paragraph)\n
     children - A list of HTMLNode objects representing the children of this node\n
-    props - A dictionary of key-value pairs representing the attributes of the HTML tag. For example, a link (<a> tag) might have {"href": "https://www.google.com"}
+    props - A dictionary of key-value pairs representing the attributes of the HTML tag. For example, 
+    ka link (<a> tag) might have {"href": "https://www.google.com"}
 
     """
     def __init__(self, tag: str = None, value: str = None, children: list["HTMLNode"] = None, props: dict[str, str] = None) -> None: 
@@ -51,3 +51,27 @@ class LeafNode(HTMLNode):
 
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
+
+class ParentNode(HTMLNode):
+    """
+    ParentNode class will handle the nesting of HTML nodes inside of one another.\n 
+    Any HTML node that's not "leaf" node (i.e. it has children) is a "parent" node.
+    """
+    def __init__(self, tag: str, children: list["HTMLNode"], props: dict[str, str] = None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag == None:
+            raise ValueError("Invalid HTML: a tag is needed")
+        
+        if self.children ==  None:
+            raise ValueError("invalid HTML: children are needed")
+
+        children_html = ""
+        for child in self.children:
+            children_html += child.to_html() 
+        
+        return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
+
+    def __repr__(self):
+        return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
