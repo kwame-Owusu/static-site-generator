@@ -23,7 +23,7 @@ class TestLeafNode(unittest.TestCase):
         with self.assertRaises(TypeError):
             # Attempt to create a LeafNode with children
             LeafNode("p", "text", {}, ["child1", "child2"])
- 
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
     
