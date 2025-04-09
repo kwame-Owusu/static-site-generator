@@ -1,4 +1,5 @@
 from textnode import TextNode, TextType
+import re
 
 def split_nodes_by_delimiter(old_nodes: TextNode, delimiter: str, text_type:TextType) -> list[TextNode]:
     """
@@ -40,3 +41,19 @@ def split_nodes_by_delimiter(old_nodes: TextNode, delimiter: str, text_type:Text
         new_nodes.extend(split_nodes)
     
     return new_nodes
+
+
+def extract_markdown_images(text: str) -> list[tuple]:
+    """
+    takes raw markdown text and returns a list of tuples. Each tuple should contain the alt text and the URL of any markdown images.
+    """
+    images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    return images 
+
+def extract_markdown_links(text: str) -> list[tuple]:
+    """
+    extracts markdown links instead of images. It should return tuples of anchor text and URLs
+    """
+    links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    return links
+
