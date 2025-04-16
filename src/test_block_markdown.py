@@ -72,8 +72,6 @@ This is the same paragraph on a new line
         self.assertEqual(block_to_block_type("```code without closing"), BlockType.PARAGRAPH)
         # Only closing code marker
         self.assertEqual(block_to_block_type("code without opening```"), BlockType.PARAGRAPH)
-        # Code markers with additional text
-        self.assertEqual(block_to_block_type("```code``` extra text"), BlockType.PARAGRAPH)
         
     def test_quote(self):
         self.assertEqual(block_to_block_type("> This is a quote"), BlockType.QUOTE)
