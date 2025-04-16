@@ -12,38 +12,29 @@ class BlockType(Enum):
   ORDERED_LIST = "ordered_list" 
 
 def block_to_block_type(markdown: str) -> BlockType:
-  stripped_line = markdown.lstrip()
-  if stripped_line.startswith('#'):
-    #count number of consecutive # symbols
-    heading_level = 0
-    for char in stripped_line:
-      if char == '#':
-        heading_level += 1
-      else:
-        break
-    if heading_level > 0 and (len(stripped_line) > heading_level and stripped_line[heading_level] == ' '):
-      return BlockType.HEADING
-
-  left_code_ticks = stripped_line.find('```')
-  if left_code_ticks >= 0:  # Check if opening ticks were found
-    right_code_ticks = stripped_line.find('```', left_code_ticks + 3)  # Start search after opening ticks
-    if right_code_ticks >= 0:  # Check if closing ticks were found
-        return BlockType.CODE 
-
-  if stripped_line.startswith('>'):
-    return BlockType.QUOTE
-  if stripped_line.startswith('- '):
-    return BlockType.UNORDERED_LIST
-
-  period_position = stripped_line.find('.')
-  if period_position > 0:
-    prefix_num = stripped_line[:period_position]
-    if prefix_num.isdigit():
-      if period_position + 1 < len(stripped_line) and stripped_line[period_position + 1] == ' ':
-        return BlockType.ORDERED_LIST
-
+  lines = markdown.split('\n')
+  if markdown.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
+     return BlockType.HEADING
+  if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"):
+     return BlockType.CODE
+  if markdown.startswith(">"):
+      for line in lines:
+          if not line.startswith(">"):
+              return BlockType.PARAGRAPH
+      return BlockType.QUOTE
+  if markdown.startswith("- "):
+      for line in lines:
+          if not line.startswith("- "):
+              return BlockType.PARAGRAPH
+      return BlockType.UNORDERED_LIST
+  if markdown.startswith("1. "):
+      i = 1
+      for line in lines:
+          if not line.startswith(f"{i}. "):
+              return BlockType.PARAGRAPH
+          i += 1
+      return BlockType.ORDERED_LIST
   return BlockType.PARAGRAPH
-
 
 
 def markdown_to_blocks(markdown: str) -> list[str]:
