@@ -23,8 +23,13 @@ def block_to_block_type(markdown: str) -> BlockType:
         break
     if heading_level > 0 and (len(stripped_line) > heading_level and stripped_line[heading_level] == ' '):
       return BlockType.HEADING
-  if stripped_line.startswith('```') and stripped_line.endswith('```'):
-    return BlockType.CODE
+
+  left_code_ticks = stripped_line.find('```')
+  if left_code_ticks >= 0:  # Check if opening ticks were found
+    right_code_ticks = stripped_line.find('```', left_code_ticks + 3)  # Start search after opening ticks
+    if right_code_ticks >= 0:  # Check if closing ticks were found
+        return BlockType.CODE 
+
   if stripped_line.startswith('>'):
     return BlockType.QUOTE
   if stripped_line.startswith('- '):
@@ -51,4 +56,4 @@ def markdown_to_blocks(markdown: str) -> list[str]:
     filtered_blocks.append(block)
   return filtered_blocks
 
-print(block_to_block_type('1. First Item'))
+print(block_to_block_type('hello world ```coding``` dsad'))
