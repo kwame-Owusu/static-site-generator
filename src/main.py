@@ -2,10 +2,6 @@ from textnode import TextType, TextNode
 import os
 import shutil
 
-def main() -> None:
-  textNode = TextNode("This is some anchor text", TextType.LINK.value, "https://www.boot.dev")
-  print(textNode)
-
 
 def move_static_to_public(source_dir, destination_dir) -> None:
     # Clear the destination directory first
@@ -36,6 +32,10 @@ def move_static_to_public(source_dir, destination_dir) -> None:
                     shutil.rmtree(destination_item_path)
                 shutil.copytree(source_item_path, destination_item_path)
 
-source_directory = "static/"
-destination_directory = "public/"
-move_static_to_public(source_directory, destination_directory)
+def main() -> None:
+  source_directory = "static/"
+  destination_directory = "public/"
+  move_static_to_public(source_directory, destination_directory)
+
+if __name__ == "__main__":
+    main()
