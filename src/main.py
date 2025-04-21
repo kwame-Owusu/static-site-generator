@@ -36,7 +36,7 @@ def move_static_to_public(source_dir, destination_dir) -> None:
 def extract_title(markdown: str) -> str:
     for line in markdown.splitlines():  # Split the markdown content into lines
         if line.startswith('#'):  # Look for the first header
-            return line.strip("#").strip()  # Remove the '#' and leading/trailing spaces
+            return line.strip("#").strip()  
     raise Exception("No header found in markdown input")
 
 
