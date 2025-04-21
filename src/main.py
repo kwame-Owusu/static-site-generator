@@ -33,14 +33,11 @@ def move_static_to_public(source_dir, destination_dir) -> None:
                 shutil.copytree(source_item_path, destination_item_path)
 
 def extract_title(markdown: str) -> str:
-    res = ""
     with open(markdown, 'r') as file:
-        for line in file.readlines():
+        for line in file:
             if line.startswith('#'):
-                res += line.strip()
-            else:
-                raise Exception("No header found in markdown file")
-    return res
+                return line.strip("#").strip()
+        raise Exception("No header found in markdown file")
 
 
 def main() -> None:
@@ -49,4 +46,5 @@ def main() -> None:
   move_static_to_public(source_directory, destination_directory)
 
 if __name__ == "__main__":
-    extract_title("content/index.md")
+    title = extract_title("content/index.md")
+    print(title)
