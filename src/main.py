@@ -73,15 +73,25 @@ def main() -> None:
     source_directory = "static/"
     destination_directory = "public/"
     template_path = "template.html"
-    markdown_path = "content/index.md"
-    dest_path = "public/index.html"
-
+    
     # Step 1: Move static files to public directory
     move_static_to_public(source_directory, destination_directory)
-
-    # Step 2: Generate the page
-    generate_page(markdown_path, template_path, dest_path)
-
+    
+    # Step 2: Generate the main page
+    generate_page("content/index.md", template_path, "public/index.html")
+    
+    # Step 3: Make sure directories exist
+    os.makedirs("public/contact", exist_ok=True)
+    os.makedirs("public/blog/glorfindel", exist_ok=True)
+    os.makedirs("public/blog/tom", exist_ok=True)
+    os.makedirs("public/blog/majesty", exist_ok=True)
+    
+    # Step 4: Generate each additional page with its own destination path
+    generate_page("content/contact/index.md", template_path, "public/contact/index.html")
+    generate_page("content/blog/glorfindel/index.md", template_path, "public/blog/glorfindel/index.html")
+    generate_page("content/blog/tom/index.md", template_path, "public/blog/tom/index.html")
+    generate_page("content/blog/majesty/index.md", template_path, "public/blog/majesty/index.html")
+    
     print("Page generation complete. Visit: http://localhost:8888")
 
 if __name__ == "__main__":
