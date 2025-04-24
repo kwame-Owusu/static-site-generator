@@ -69,6 +69,29 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     with open(dest_path, "w") as file:
         file.write(template_content) 
 
+def generate_pages_recursively(dir_path_content, template_path, dest_dir_path) -> None:
+    for root, dirs, files in os.walk(dir_path_content):
+        for file_item in files:
+            if file_item.endswith(".md"):
+                # Build the full path to the markdown file
+                file_path = os.path.join(root, file_item)
+
+                # Calculate the relative path, and construct the destination path
+                rel_path = os.path.relpath(root, dir_path_content)
+                dest_dir = os.path.join("public", rel_path)
+
+                # Ensure the directory exists
+                os.makedirs(dest_dir, exist_ok=True)
+
+                # Create the destination html file path
+                dest_file_name = os.path.splitext(file_item)[0] + ".html"
+                dest_dir_path = os.path.join(dest_dir, dest_file_name)
+
+                # Generate the HTML file
+                generate_page(file_path, template_path, dest_dir_path)
+
+
+
 def main() -> None:
     source_directory = "static/"
     destination_directory = "public/"
@@ -95,4 +118,4 @@ def main() -> None:
     print("Page generation complete. Visit: http://localhost:8888")
 
 if __name__ == "__main__":
-    main()
+    generate_pages_recursively("content/", "template.html", "public/")
