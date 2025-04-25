@@ -11,7 +11,7 @@ else:
 
 def move_static_to_public(source_dir, destination_dir) -> None:
     # Clear the destination directory first
-    public_path = 'public/'
+    public_path = 'docs/'
     if os.path.exists(public_path):
         for item in os.listdir(public_path):
             item_path = os.path.join(public_path, item)
@@ -85,7 +85,7 @@ def generate_pages_recursively(dir_path_content: str, template_path: str, dest_d
 
                 # Calculate the relative path, and construct the destination path
                 rel_path = os.path.relpath(root, dir_path_content)
-                dest_dir = os.path.join("public", rel_path)
+                dest_dir = os.path.join("docs", rel_path)
 
                 # Ensure the directory exists
                 os.makedirs(dest_dir, exist_ok=True)
@@ -101,7 +101,7 @@ def generate_pages_recursively(dir_path_content: str, template_path: str, dest_d
 
 def main() -> None:
     source_directory = "static/"
-    destination_directory = "public/"
+    destination_directory = "docs/"
     template_path = "template.html"
     
     #Move static files to public directory
@@ -114,4 +114,4 @@ def main() -> None:
     print("Page generation complete. Visit: http://localhost:8888")
 
 if __name__ == "__main__":
-    pass
+    main()
