@@ -2,7 +2,12 @@ from textnode import TextType, TextNode
 from block_markdown import markdown_to_html_node
 import os
 import shutil
-
+import sys
+ 
+if len(sys.argv) > 1:
+    base_path = sys.argv[1]
+else:
+    base_path= '/'
 
 def move_static_to_public(source_dir, destination_dir) -> None:
     # Clear the destination directory first
@@ -40,7 +45,7 @@ def extract_title(markdown: str) -> str:
     raise Exception("No header found in markdown input")
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(from_path: str, template_path: str, dest_path: str, base_path: str) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
     markdown_content = ""
     template_content = ""
@@ -61,6 +66,8 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
         template_content = template_content.replace('{{ Title }}', template_title)
         template_content = template_content.replace('{{ Content }}', markdown_res)
 
+        template_content = template_content.replace('href="/', f'href="{base_path}')
+        template_content = template_content.replace('src="/', f'src="{base_path}')
       # Ensure directories exist before writing the file
     if os.path.dirname(dest_path):  # Check parent directory
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
@@ -69,7 +76,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     with open(dest_path, "w") as file:
         file.write(template_content) 
 
-def generate_pages_recursively(dir_path_content, template_path, dest_dir_path) -> None:
+def generate_pages_recursively(dir_path_content: str, template_path: str, dest_dir_path: str, base_path: str) -> None:
     for root, dirs, files in os.walk(dir_path_content):
         for file_item in files:
             if file_item.endswith(".md"):
@@ -88,7 +95,7 @@ def generate_pages_recursively(dir_path_content, template_path, dest_dir_path) -
                 dest_dir_path = os.path.join(dest_dir, dest_file_name)
 
                 # Generate the HTML file
-                generate_page(file_path, template_path, dest_dir_path)
+                generate_page(file_path, template_path, dest_dir_path, base_path)
 
 
 
@@ -100,8 +107,11 @@ def main() -> None:
     #Move static files to public directory
     move_static_to_public(source_directory, destination_directory)
     
-    generate_pages_recursively("content/", template_path, destination_directory)
+    generate_pages_recursively("content/", template_path, destination_directory, base_path)
+
+
+   
     print("Page generation complete. Visit: http://localhost:8888")
 
 if __name__ == "__main__":
-    main()
+    pass
