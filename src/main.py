@@ -68,7 +68,9 @@ def generate_page(from_path: str, template_path: str, dest_path: str, base_path:
 
         template_content = template_content.replace('href="/', f'href="{base_path}')
         template_content = template_content.replace('src="/', f'src="{base_path}')
-      # Ensure directories exist before writing the file
+      
+      
+    # Ensure directories exist before writing the file
     if os.path.dirname(dest_path):  # Check parent directory
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
@@ -100,17 +102,15 @@ def generate_pages_recursively(dir_path_content: str, template_path: str, dest_d
 
 
 def main() -> None:
-    source_directory = "static/"
-    destination_directory = "docs/"
-    template_path = "template.html"
+    source_directory = "./static"
+    destination_directory = "./docs"
+    content_path = "./content"
+    template_path = "./template.html"
     
     #Move static files to public directory
-    move_static_to_public(source_directory, destination_directory)
-    
-    generate_pages_recursively("content/", template_path, destination_directory, base_path)
-
-
-   
+    move_static_to_public(source_directory, destination_directory) 
+    generate_pages_recursively(content_path, template_path, destination_directory, base_path)
+ 
     print("Page generation complete. Visit: http://localhost:8888")
 
 if __name__ == "__main__":
